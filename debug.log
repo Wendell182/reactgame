@@ -1,3 +1,5 @@
 [0716/185516.533:ERROR:process_reader_win.cc(151)] SuspendThread: Acesso negado. (0x5)
 [0716/185526.930:ERROR:exception_snapshot_win.cc(98)] thread ID 135508 not found in process
 [0716/185527.778:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: Tentou-se acessar um processo de saída. (0xc000010a)
+[0720/122010.568:ERROR:process_info.cc(375)] NtQuerySystemInformation SystemExtendedHandleInformation: O comprimento do registro de informações especificado não coincide com o comprimento necessário à classe de informações especificada. (0xc0000004)
+[0720/125149.112:ERROR:process_info.cc(375)] NtQuerySystemInformation SystemExtendedHandleInformation: O comprimento do registro de informações especificado não coincide com o comprimento necessário à classe de informações especificada. (0xc0000004)

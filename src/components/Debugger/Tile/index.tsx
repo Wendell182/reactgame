@@ -1,5 +1,6 @@
 import React from 'react';
 import { TILE_SIZE } from '../../../settings/constants';
+import { Ecanvas } from '../../../contexts/canvas/helpers';
 
 interface IProps{
   position:{x:number, y:number};
@@ -9,11 +10,27 @@ interface IProps{
 function Tile(props: IProps){
   function getTileColor(){
     switch(props.text){
-      case 0:
-        return 'yellow';
+      case Ecanvas.FLOOR:
+        return 'darkgrey';
       
-      case 1:
+      case Ecanvas.WALL:
+        return 'yellow';
+
+      case Ecanvas.DOOR:
+        return 'white';
+
+      case Ecanvas.TRAP:
+        return 'chartreuse';
+
+      case Ecanvas.MINI_DEMON:
+      case Ecanvas.DEMON:
         return 'red';
+        
+      case Ecanvas.CHEST:
+        return 'cyan';  
+
+      case Ecanvas.HERO:
+        return 'magenta';  
     }
   }
 
@@ -27,6 +44,8 @@ function Tile(props: IProps){
       height:TILE_SIZE,
       color: color,
       border:`2px solid ${color}`,
+      fontSize: 32,
+      zIndex: 2,
       
     }}>
       {props.text}

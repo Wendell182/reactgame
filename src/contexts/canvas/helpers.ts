@@ -1,4 +1,5 @@
 import { EDirection } from "../../settings/constants";
+import React from "react";
 
 export function handleNextPosition(direction,position){
   switch(direction ){
@@ -17,41 +18,67 @@ export function handleNextPosition(direction,position){
   }
 } 
 
+export enum Ecanvas {
+  FLOOR = 0,
+  WALL = 1,
+  DOOR = 2,
+  TRAP = 3,
+  MINI_DEMON = 4,
+  DEMON = 5,
+  CHEST = 5,
+  HERO = 7
+};
+
+const FL = Ecanvas.FLOOR;
+const WL = Ecanvas.WALL;
+const DR = Ecanvas.DOOR;
+const TR = Ecanvas.TRAP;
+const MD = Ecanvas.MINI_DEMON;
+const DE = Ecanvas.DEMON;
+const CH = Ecanvas.CHEST;
+const HE = Ecanvas.HERO;
+
+
 /*
 *TODO VALOR 1 É IGUAL A PAREDE
  */
 export const canvas = [
-  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-  [1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1],
-  [1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+  [WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL],
+  [WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL],
+  [WL,FL,FL,WL,FL,FL,FL,FL,WL,FL,FL,FL,FL,FL,FL,FL,WL,FL,FL,WL],
+  [WL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,WL],
+  [WL,FL,FL,FL,FL,FL,FL,CH,FL,FL,FL,FL,FL,FL,FL,FL,MD,FL,FL,WL],
+  [WL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,WL],
+  [WL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,WL],
+  [WL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,WL],
+  [WL,TR,FL,FL,FL,FL,MD,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,WL],
+  [WL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,WL],
+  [WL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,WL],
+  [WL,FL,FL,FL,FL,FL,FL,FL,FL,FL,DE,FL,FL,FL,FL,FL,FL,FL,FL,WL],
+  [WL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,WL],
+  [WL,FL,FL,FL,MD,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,WL],
+  [WL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,WL],
+  [WL,FL,FL,FL,TR,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,CH,FL,FL,WL],
+  [WL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,WL],
+  [WL,HE,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,WL],
+  [WL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,FL,WL],
+  [WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL,WL],
 ];
 
-/*function getCanvasMap(){
-  for(let y = 1; y<canvas.length; y++){
-    const canvasY = canvas[y];
+export function checkValidMoviment(nextPosition){
+ const canvasvalue = canvas[nextPosition.y][nextPosition.x]
 
-    for(let x = 0; y < canvasY.length; x++){
-      const canvasYX = canvasY[x];
+ if(canvasvalue === Ecanvas.WALL){
+   return false;
+ }
 
-      const position = {x: x, y:y};
-      const tile = canvas[y][x] || canvasYX;
-    }
-  }
-}*/
+ if(canvasvalue === Ecanvas.CHEST){
+  console.log('pisou no baú');
+ }
+
+ if(canvasvalue === Ecanvas.TRAP){
+  console.log('pisou na trap');
+}
+
+ return true;
+}
