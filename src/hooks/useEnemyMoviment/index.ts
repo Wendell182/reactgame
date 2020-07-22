@@ -1,32 +1,30 @@
-import useInterval from '@use-it/interval'; 
+import useInterval from '@use-it/interval';
 import React from 'react';
-import { EDirection } from '../../settings/constants';
-import { handleNextPosition, checkValidMoviment } from '../../contexts/canvas/helpers';
+import { EDirection, EWalker } from '../../settings/constants';
+import { CanvasContext } from '../../contexts/canvas';
 
-function useEnemyMoviment(initialPosition){
-    const [positionState, updatePositionState] = React.useState(initialPosition);
-    const [direction, updateDirectionState] = React.useState(EDirection.RIGHT);
-    
-     useInterval(function move(){
-        const random = Math.floor(Math.random() * 4);
-        const directionArray = Object.values(EDirection);
-        const randomDirection = directionArray[random];
-       
-         const nextPosition = handleNextPosition(randomDirection,positionState);
-         const isValidMoviment = checkValidMoviment(nextPosition);
+function useEnemyMoviment(initialPosition) {
+  const canvasContex = React.useContext(CanvasContext);
+  const [positionState, updatePositionState] = React.useState(initialPosition);
+  const [direction, updateDirectionState] = React.useState(EDirection.RIGHT);
 
-         if(isValidMoviment){
-           updateDirectionState(randomDirection);
-           updatePositionState(nextPosition);
-         }
+  useInterval(function move() {
+    var random = Math.floor(Math.random() * 4);
+    var directionArray = Object.values(EDirection);
+    const randomDirection = directionArray[random];
 
-        
-    },2000);
+    const moviment = canvasContex.updateCanvas(randomDirection, positionState, EWalker.ENEMY);
 
-    return{
-      position: positionState,
-      direction: direction,
+    if (moviment.nextMove.valid) {
+      updateDirectionState(randomDirection);
+      updatePositionState(moviment.nextPosition);
     }
+  }, 2000);
+
+  return {
+    position: positionState,
+    direction: direction,
+  }
 }
 
 export default useEnemyMoviment;

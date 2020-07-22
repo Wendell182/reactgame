@@ -1,56 +1,56 @@
 import React from 'react';
 import { TILE_SIZE } from '../../../settings/constants';
-import { Ecanvas } from '../../../contexts/canvas/helpers';
+import { ECanvas } from '../../../contexts/canvas/helpers';
 
-interface IProps{
-  position:{x:number, y:number};
+interface IProps {
+  position: { x: number, y: number };
   text: number;
 }
 
-function Tile(props: IProps){
-  function getTileColor(){
-    switch(props.text){
-      case Ecanvas.FLOOR:
+function Tile(props: IProps) {
+
+  function getTileColor() {
+    switch(props.text) {
+      case ECanvas.FLOOR:
         return 'darkgrey';
-      
-      case Ecanvas.WALL:
+
+      case ECanvas.WALL:
         return 'yellow';
 
-      case Ecanvas.DOOR:
+      case ECanvas.DOOR:
         return 'white';
-
-      case Ecanvas.TRAP:
+      
+      case ECanvas.TRAP:
         return 'chartreuse';
 
-      case Ecanvas.MINI_DEMON:
-      case Ecanvas.DEMON:
+      case ECanvas.MINI_DEMON:
+      case ECanvas.DEMON:
         return 'red';
-        
-      case Ecanvas.CHEST:
-        return 'cyan';  
 
-      case Ecanvas.HERO:
-        return 'magenta';  
+      case ECanvas.CHEST:
+        return 'cyan';
+
+      case ECanvas.HERO:
+        return 'magenta';
     }
   }
 
-  const color =getTileColor();
+  const color = getTileColor();
   return (
     <div style={{
-      position: "absolute",
+      position: 'absolute',
       left: TILE_SIZE * props.position.x,
-      top:TILE_SIZE * props.position.y,
-      width:TILE_SIZE,
-      height:TILE_SIZE,
+      top: TILE_SIZE * props.position.y,
+      width: TILE_SIZE,
+      height: TILE_SIZE,
       color: color,
-      border:`2px solid ${color}`,
+      border: `2px solid ${color}`,
       fontSize: 32,
       zIndex: 2,
-      
     }}>
       {props.text}
     </div>
-  );
+  )
 }
 
 export default Tile;

@@ -1,34 +1,43 @@
-import useEventListener from '@use-it/event-listener'; 
+import useEventListener from '@use-it/event-listener';
 import React from 'react';
-import { EDirection } from '../../settings/constants';
-import { handleNextPosition, checkValidMoviment } from '../../contexts/canvas/helpers';
+import { EDirection, EWalker } from '../../settings/constants';
+import { CanvasContext } from '../../contexts/canvas';
+import { ChestsContext } from '../../contexts/chests';
 
-function useHeroMoviment(initialPosition){
-    const [positionState, updatePositionState] = React.useState(initialPosition);
-    const [direction, updateDirectionState] = React.useState(EDirection.RIGHT);
-    //const positionState = heroPositionState[0];
-    //const updatePositionState = heroPositionState[1];
-    useEventListener('keydown',(event: React.KeyboardEvent<HTMLDivElement>)=>{
-      const direction = event.key as EDirection;
+function useHeroMoviment(initialPosition) {
+  const canvasContext = React.useContext(CanvasContext);
+  const chestsContext = React.useContext(ChestsContext);
 
-      if(direction.indexOf('Arrow') ===-1 ){
-        return;
-      }
+  const [positionState, updatePositionState] = React.useState(initialPosition);
+  const [direction, updateDirectionState] = React.useState(EDirection.RIGHT);
 
-       const nextPosiiton = handleNextPosition(direction,positionState); 
-       const isValidMoviment = checkValidMoviment(nextPosiiton);
-       
-       if(isValidMoviment){
-         updatePositionState(nextPosiiton);
-         updateDirectionState(direction)
-       }
-       
-    });
+  useEventListener('keydown', (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const direction = event.key as EDirection;
 
-    return{
-      position: positionState,
-      direction: direction,
+    if (direction.indexOf('Arrow') === -1) {
+      return;
     }
+
+    const moviment = canvasContext.updateCanvas(direction, positionState, EWalker.HERO);
+
+    if (moviment.nextMove.valid) {
+      updatePositionState(moviment.nextPosition);
+      updateDirectionState(direction);
+    }
+
+    if (moviment.nextMove.dead) {
+      console.log('Você morreu');
+    }
+
+    if (moviment.nextMove.chest) {
+      chestsContext.updateOpenedChests();
+    }
+  });
+
+  return {
+    position: positionState,
+    direction: direction,
+  }
 }
 
 export default useHeroMoviment;
